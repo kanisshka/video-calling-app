@@ -3,7 +3,7 @@ import Navbar from '@/components/Navbar'
 import Sidebar from '@/components/Sidebar'
 import { Metadata } from 'next';
 export const metadata: Metadata = {
-    title: "Video-Calling-App",
+    title: "ZoomMate",
     description: "Video-Calling-App",
     icons:{
       icon:'/icons/logo.svg'

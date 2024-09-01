@@ -3,16 +3,16 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 const inter = Inter({ subsets: ["latin"] });
-import { Toaster } from "@/components/ui/toaster"
+import { Toaster } from "@/components/ui/toaster";
 export const metadata: Metadata = {
-  title: "Video-Calling-App",
+  title: "ZoomMate",
   description: "Video-Calling-App",
-  icons:{
-    icon:'/icons/logo.svg'
-  }
+  icons: {
+    icon: "/icons/logo.svg",
+  },
 };
-import '@stream-io/video-react-sdk/dist/css/styles.css';
-import 'react-datepicker/dist/react-datepicker.css'
+import "@stream-io/video-react-sdk/dist/css/styles.css";
+import "react-datepicker/dist/react-datepicker.css";
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -20,19 +20,26 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-     <ClerkProvider appearance={{layout:{
-logoImageUrl:"/icons/yoom-logo.svg",
-socialButtonsVariant:'iconButton'
-     },variables:{
-      colorText:'#fff',
-      colorPrimary:'#0E78F9',
-      colorBackground:'#1c1f2e',
-      colorInputBackground:'#252a41',
-      colorInputText:'#fff'
-     }}}>
-      <body className={`${inter.className} bg-dark-2`}>
-        {children}
-        <Toaster/></body> </ClerkProvider>
+      <ClerkProvider
+        appearance={{
+          // layout: {
+          //   logoImageUrl: "/icons/yoom-logo.svg",
+          //   socialButtonsVariant: "iconButton",
+          // },
+          variables: {
+            colorText: "#fff",
+            colorPrimary: "#0E78F9",
+            colorBackground: "#1c1f2e",
+            colorInputBackground: "#252a41",
+            colorInputText: "#fff",
+          },
+        }}
+      >
+        <body className={`${inter.className} bg-dark-2`}>
+          {children}
+          <Toaster />
+        </body>{" "}
+      </ClerkProvider>
     </html>
   );
 }
