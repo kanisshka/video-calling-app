@@ -21,7 +21,9 @@
 .str-video__participant-details {
   color: white;
 }
-
+.cl-providerIcon__github{
+  filter: brightness(8);
+}
 .str-video__menu-container {
   color: white;
 }
