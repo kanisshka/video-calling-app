@@ -21,7 +21,7 @@
 .str-video__participant-details {
   color: white;
 }
-.cl-providerIcon__github{
+.cl-providerIcon__github {
   filter: brightness(8);
 }
 .str-video__menu-container {
@@ -80,6 +80,78 @@
   color: white;
 }
 
+/* Chat - UI */
+/* .str-chat__channel-header {
+  display: flex;
+  align-items: center;
+  /* background: aqua; 
+  justify-content: flex-start;
+  gap: 10px;
+  margin-left: -10px;
+}
+.str-chat__avatar-image {
+  width: auto;
+  height: auto;
+  object-fit: cover;
+  border-radius: 50%;
+  max-width: 40px;
+}
+.str-chat__avatar
+  .str-chat__message-sender-avatar
+  .str-chat__avatar--one-letter {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  border: 1px solid black;
+}
+.str-chat__empty-channel {
+  display: flex;
+  height: 50vh;
+  padding: 10px 0;
+}
+.str-chat__empty-channel svg {
+  height: 24px !important;
+  margin-left: -12%;
+  margin-right: -9%;
+}
+.str-chat__file-input {
+  display: none;
+}
+.str-chat__message-metadata , .str-chat__message-error-icon{
+  display: none;
+}
+.str-chat__message-textarea {
+  width: 100% !important;
+  border: 1px solid rgb(204, 204, 204)!important;
+  border-radius: 25px!important;
+  padding: 10px 45px!important;
+  height: auto!important;
+  min-height: 40px !important;
+max-height: 100px!important;
+  resize: none
+}
+.str-chat__send-button{
+  position: absolute;
+  right: 4%;
+  top: 21%;
+}
+.str-chat__file-input-container{
+  position: absolute;
+  left: 5%;
+  top: 22%;
+}
+.str-chat__message-input{
+  position: relative;
+}
+.str-chat__main-panel-inner{
+  height: 87%
+}
+.str-chat__channel , .str-chat__container{
+  height: 100%;
+} */
+.str-chat__channel .str-chat__container{
+  flex-direction: column
+}
 /* =============================== */
 
 @layer utilities {
