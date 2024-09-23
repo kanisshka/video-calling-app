@@ -75,7 +75,7 @@ const StreamVideoProvider = ({ children }: { children: ReactNode }) => {
       {/* <Chat client={chatClient}> */}
       {children}
       {/* </Chat> */}
-      <button
+      {/* <button
         onClick={() => setIsChatVisible((prev) => !prev)}
         style={{
           position: "fixed",
@@ -108,7 +108,7 @@ const StreamVideoProvider = ({ children }: { children: ReactNode }) => {
             </Channel>
           </Chat>
         </div>
-      )}
+      )} */}
     </StreamVideo>
   );
 };
