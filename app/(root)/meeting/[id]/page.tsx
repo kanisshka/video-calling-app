@@ -8,7 +8,7 @@ import { MessageSquare } from "lucide-react";
 import { StreamCall, StreamTheme } from "@stream-io/video-react-sdk";
 import { useGetCallById } from "@/hooks/useGetCallById";
 import ChatComponent from "@/components/Chat";
-import { MyToggleTranscriptionButton } from "@/components/ToggleTranscript";
+// import { MyToggleTranscriptionButton } from "@/components/ToggleTranscript";
 const Meeting = ({ params: { id } }: { params: { id: string } }) => {
   const { user, isLoaded } = useUser();
   const [isChatVisible, setIsChatVisible] = useState(false);

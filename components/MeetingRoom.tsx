@@ -11,7 +11,7 @@ import {
 } from "@stream-io/video-react-sdk";
 import { MyBackgroundFilterSettings } from "@/components/BackgroundSettings";
 import React, { useState } from "react";
-import { MyToggleTranscriptionButton } from "./ToggleTranscript";
+// import { MyToggleTranscriptionButton } from "./ToggleTranscript";
 import VideoBackground from "./VideoBackground";
 import LayoutControl from "./LayoutControl";
 import {
