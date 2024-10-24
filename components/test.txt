@@ -1,0 +1,170 @@
+import {
+  useCall,
+  useCallStateHooks,
+  TranscriptionSettingsRequestModeEnum,
+} from "@stream-io/video-react-sdk";
+import { useState, useEffect } from "react";
+export const MyToggleTranscriptionButton = () => {
+  const call = useCall();
+  const { useCallSettings, useIsCallTranscribingInProgress } =
+    useCallStateHooks();
+
+  const { transcription } = useCallSettings() || {};
+  if (transcription?.mode === TranscriptionSettingsRequestModeEnum.DISABLED) {
+    // transcriptions are not available, render nothing
+    return null;
+  }
+  const isTranscribing = useIsCallTranscribingInProgress();
+  // const [transcriptionInterval, setTranscriptionInterval] = useState<any>(null);
+  const [transcriptions, setTranscriptions] = useState<string[]>([]);
+  // let transcriptionInterval: any;
+  const [displayedMessages, setDisplayedMessages] = useState<string[]>([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [transcriptionInterval, setTranscriptionInterval] = useState<any>(null);
+  const [displayedTranscriptions, setDisplayedTranscriptions] = useState<any[]>([]); // Track what has been displayed
+  const chunkSize = 3; // How many messages to display at once
+  const displayDuration = 3000; // How long each set of messages should be shown (in milliseconds)
+
+
+// Function to start polling for transcription data
+const startTranscriptionPolling = () => {
+  // Clear any existing interval before starting a new one
+  if (transcriptionInterval) {
+    clearInterval(transcriptionInterval);
+  }
+
+  // Set up interval to fetch transcription data every 2 seconds (for near real-time updates)
+  const interval = setInterval(() => {
+    fetchTranscription(); // Fetch the transcription data repeatedly
+  }, 15000); // Poll every 2 seconds (adjust as necessary for your needs)
+  setTranscriptionInterval(interval);
+};
+  const handleToggle = () => {
+    if (isTranscribing) {
+      call
+        ?.stopTranscription()
+        .then((res) => {
+          console.log(res, "res"); // Log the response
+          stopTranscriptionPolling()
+        })
+        .catch((err) => {
+          console.log("Failed to stop transcription", err); // Log any errors
+        });
+    } else {
+      call?.startTranscription()
+      .then((res) => {
+        console.log(res, "Transcription Started"); // Log the response
+        setTimeout(() => {
+          startTranscriptionPolling(); // Start polling only when transcription is active
+        }, 3000); // Wait for 3 seconds before polling
+      })
+      .catch((err) => {
+        console.error("Failed to start transcription", err);
+      });
+    }
+  };
+  const fetchTranscription = async () => {
+    try {
+      const transcriptionsResponse = await call?.queryTranscriptions();
+
+      if (!transcriptionsResponse || transcriptionsResponse.transcriptions.length === 0) {
+        throw new Error('No transcriptions found.');
+      }
+  
+      
+    // Access the first transcription object in the array
+    const transcription = transcriptionsResponse.transcriptions[0];
+    
+    // Get the URL from the transcription object
+    const transcriptionUrl = transcription.url;
+
+    // console.log('Transcription URL:', transcriptionUrl);
+
+    // Now you can fetch the transcription content from the URL
+    const response = await fetch(transcriptionUrl);
+    const transcriptionData = await response.text();
+
+    // Process the transcription data (as .jsonl format)
+    const transcriptionLines = transcriptionData.split('\n').filter(Boolean); // Filter out empty lines
+    const transcriptions = transcriptionLines.map(line => JSON.parse(line));
+    // transcriptions.forEach((line) => {
+    //   console.log('Transcription text:', line.text);  // Assuming each line contains 'text'
+    // });
+    const newTranscriptions = transcriptionLines.map((line) => JSON.parse(line));
+
+   // Filter out already displayed transcriptions based on start_ts or text
+      const uniqueTranscriptions = newTranscriptions.filter((newItem) => {
+        return !displayedTranscriptions.some(
+          (displayedItem) =>
+            displayedItem.start_ts === newItem.start_ts || // Compare based on unique start_ts
+            displayedItem.text === newItem.text // Or compare based on text
+        );
+      });
+
+    if (uniqueTranscriptions.length > 0) {
+      setDisplayedTranscriptions([...displayedTranscriptions, ...uniqueTranscriptions]); // Update displayed transcriptions
+      setTranscriptions(uniqueTranscriptions); // Show only new messages
+    }
+    console.log(uniqueTranscriptions,'unique')
+    // Only update if newTranscriptions are different from current state
+    if (JSON.stringify(transcriptions) !== JSON.stringify(newTranscriptions)) {
+      setTranscriptions(newTranscriptions);
+      console.log(newTranscriptions,'new')
+    }
+
+  } catch (error) {
+    console.error('Error fetching transcription URL or data:', error);
+  }
+  };
+    // Function to stop polling
+    const stopTranscriptionPolling = () => {
+      if (transcriptionInterval) {
+        clearInterval(transcriptionInterval);
+        setTranscriptionInterval(null); // Clear the interval variable
+      }
+    };
+  // fetchTranscription();
+  useEffect(() => {
+    // Cleanup on component unmount or when transcription stops
+    return () => stopTranscriptionPolling();
+  }, []);
+  useEffect(() => {
+    // Function to handle showing the next set of messages
+    const showNextMessages = () => {
+      if (transcriptions.length === 0) return;
+
+      const nextIndex = currentIndex + chunkSize;
+      const messagesToShow = transcriptions.slice(currentIndex, nextIndex);
+
+      if (messagesToShow.length > 0) {
+        setDisplayedMessages(messagesToShow);
+        setCurrentIndex(nextIndex >= transcriptions.length ? 0 : nextIndex); // Reset to the beginning when reaching the end
+      }
+    };
+
+    const interval = setInterval(showNextMessages, displayDuration); // Show next set of messages every few seconds
+
+    return () => clearInterval(interval); // Cleanup on component unmount
+  }, [transcriptions, currentIndex]);
+  // console.log(displayedMessages,'call')
+  return (
+    <>
+    <button onClick={() => handleToggle()}>
+      {isTranscribing ? "Stop transcription" : "Start transcription"}
+    </button>
+     {/* Display transcription text */}
+     {/* <div>
+     <h3>Transcription:</h3>
+     {displayedTranscriptions.length === 0 ? (
+       <p>No transcription available yet...</p>
+     ) : (
+       <ul>
+         {displayedTranscriptions.map((text, index) => (
+           <li key={index}>{text}</li>
+         ))}
+       </ul>
+     )}
+   </div> */}
+   </>
+  );
+};

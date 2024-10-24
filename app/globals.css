@@ -7,13 +7,90 @@
   padding: 0;
   box-sizing: border-box;
 }
+/* MenuControl */
+.widFull{
+  height: 70vh;
+  width: 50vw;
+  margin-bottom: 10px;
+  border-radius: 20px;
+  padding: 10px;
+}
+.leftCont{
+  width: 40%;
+  /* background-color: #565761; */
+  /* background-color: aliceblue; */
+}
 
+.rightCont{
+  width: 60%;
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+    scrollbar-width: none; /* For Firefox */
+    -ms-overflow-style: none;  /* For Internet Explorer and Edge */
+  /* background-color: aquamarine; */
+}
+.width50{
+  width: 100%;
+  height: 60vh;
+  border-radius: 20px;
+  padding: 10px;
+  border: 1px solid white;
+  background-color: #565761;
+}
+.width50 .str-video__video-preview-container {
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+}
+.my-video-filters{
+  margin-top: 15px;
+}
+.blurEffect{
+  gap: 10px;
+  display: flex;
+  margin: 10px auto;
+}
+.backgrounds{
+  margin: 15px auto;
+}
+.blurEffect button{
+  border: 1px solid white;
+  border-radius: 20px;
+  padding: 5px 10px;
+
+}
+.leftCont ul li{
+  display: flex;
+  gap: 5px;
+  padding: 10px;
+  font-size: 16px;
+  align-items: center;
+}
+.backGroundUl{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: space-between;
+}
+.backGroundUl li {
+  height: 125px;
+  width: 200px;
+}
+
+.backGroundUl li img {
+  object-fit: cover !important; /* Ensures the image fits within the container */
+  height: 100% !important;
+  width: 100% !important;
+  border-radius: 20px;
+}
 /* ======== stream css overrides ======== */
 .str-video__call-stats {
   max-width: 500px;
   position: relative;
 }
-
+.mobileHide{
+  display: none;
+}
 .str-video__speaker-layout__wrapper {
   max-height: 700px;
 }
@@ -54,7 +131,9 @@
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
 }
-
+.str-video__composite-button__button-group .str-video__call-controls__button.str-video__menu-toggle-button{
+  background-color: inherit!important;
+}
 /* ==== clerk class override ===== */
 
 .cl-userButtonPopoverActionButtonIcon {
@@ -182,5 +261,11 @@ max-height: 100px!important;
   100% {
     animation-timing-function: ease-in;
     width: 100%;
+  }
+}
+
+@media (max-width: 639px) {
+  .mobileHide {
+    display: block;
   }
 }
